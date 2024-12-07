@@ -54,8 +54,6 @@
         document.getElementById('sendMessage').addEventListener('click', function() {
             const inputs = document.querySelectorAll('.input-group'); // جميع المجموعات
             const errors = [];
-            let messageText = ""; // الرسالة المجمعة لجميع الأرقام
-            let phoneNumbers = []; // الأرقام التي سيتم إرسال الرسالة إليها
             
             // معالجة كل حقل
             inputs.forEach((group, index) => {
@@ -80,27 +78,20 @@
                     phoneNumber = `+2${phoneNumber}`;
                 }
 
-                // إضافة الرقم إلى القائمة
-                phoneNumbers.push(phoneNumber);
-                
-                // إضافة اسم الشخص إلى الرسالة
-                messageText += `أهلا ${personName}\n`;
+                // الرسالة المخصصة لكل شخص
+                const message = `أهلا ${personName}`;
+
+                // إنشاء الرابط الخاص بالواتساب
+                const whatsappLink = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+
+                // فتح الرابط لإرسال الرسالة
+                window.open(whatsappLink, "_blank");
             });
 
-            // إذا كانت هناك أخطاء في المدخلات
+            // عرض الأخطاء إن وجدت
             if (errors.length > 0) {
                 alert(errors.join("\n"));
-                return;
             }
-
-            // رسالة موحدة لجميع الأرقام
-            const finalMessage = encodeURIComponent(messageText);
-
-            // إنشاء الرابط الخاص بالواتساب مع جميع الأرقام
-            const whatsappLink = `https://wa.me/?text=${finalMessage}`;
-
-            // فتح الرابط
-            window.open(whatsappLink, "_blank");
         });
     </script>
 </body>
