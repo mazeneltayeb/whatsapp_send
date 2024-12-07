@@ -9,24 +9,24 @@
     <h2>Send a WhatsApp Message</h2>
     
     <!-- إدخال الرقم -->
-    <label for="phoneNumber">Enter Phone Number:</label>
+    <label for="phoneNumber">Phone Number:</label>
     <input type="text" id="phoneNumber" placeholder="Enter phone number (e.g., 1012345678)">
     <br><br>
     
-    <!-- إدخال الرسالة -->
-    <label for="message">Enter Message:</label>
-    <textarea id="message" placeholder="Type your message here"></textarea>
+    <!-- إدخال اسم الشخص -->
+    <label for="personName">Recipient Name:</label>
+    <input type="text" id="personName" placeholder="Enter recipient's name">
     <br><br>
     
     <!-- زر الإرسال -->
     <button id="sendMessage">Send Message</button>
 
     <script>
-        // إضافة حدث عند الضغط على الزر
         document.getElementById('sendMessage').addEventListener('click', function() {
-            // قراءة الرقم والرسالة من الحقول
-            let phoneNumber = document.getElementById('phoneNumber').value.trim(); // الرقم
-            const message = document.getElementById('message').value.trim(); // الرسالة
+            // قراءة الرقم، الاسم، والرسالة من الحقول
+            const phoneNumberInput = document.getElementById('phoneNumber'); // مدخل الرقم
+            const personName = document.getElementById('personName').value.trim(); // اسم الشخص
+            let phoneNumber = phoneNumberInput.value.trim(); // الرقم
             
             // التحقق من إدخال الرقم
             if (!phoneNumber) {
@@ -34,10 +34,20 @@
                 return;
             }
 
-            // إضافة كود الدولة +2 إذا لم يكن موجودًا
+            // التحقق من إدخال الاسم
+            if (!personName) {
+                alert("Please enter the recipient's name!");
+                return;
+            }
+
+            // إضافة +2 تلقائيًا إذا لم يكن موجودًا
             if (!phoneNumber.startsWith("+2")) {
                 phoneNumber = `+2${phoneNumber}`;
+                phoneNumberInput.value = phoneNumber; // تحديث قيمة الحقل
             }
+
+            // إنشاء الرسالة
+            const message = `أهلا ${personName}`;
 
             // إنشاء الرابط الخاص بالواتساب
             const whatsappLink = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
