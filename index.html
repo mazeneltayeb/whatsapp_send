@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Message Sender</title>
+    <title>Send WhatsApp Messages</title>
     <style>
         .input-group {
             margin-bottom: 10px;
@@ -21,7 +21,6 @@
         <div class="input-group">
             <input type="text" id="phoneNumber1" placeholder="Enter phone number (e.g., 1012345678)">
             <input type="text" id="personName1" placeholder="Enter recipient's name">
-            <input type="file" id="fileInput1">
         </div>
     </div>
     
@@ -45,7 +44,6 @@
             inputGroup.innerHTML = `
                 <input type="text" id="phoneNumber${inputCounter}" placeholder="Enter phone number (e.g., 1012345678)">
                 <input type="text" id="personName${inputCounter}" placeholder="Enter recipient's name">
-                <input type="file" id="fileInput${inputCounter}">
             `;
 
             // إضافة المجموعة إلى الحاوية
@@ -56,12 +54,13 @@
         document.getElementById('sendMessage').addEventListener('click', function() {
             const inputs = document.querySelectorAll('.input-group'); // جميع المجموعات
             const errors = [];
+            let messageText = ""; // الرسالة المجمعة لجميع الأرقام
+            let phoneNumbers = []; // الأرقام التي سيتم إرسال الرسالة إليها
             
             // معالجة كل حقل
             inputs.forEach((group, index) => {
                 const phoneNumberInput = group.querySelector(`#phoneNumber${index + 1}`);
                 const personNameInput = group.querySelector(`#personName${index + 1}`);
-                const fileInput = group.querySelector(`#fileInput${index + 1}`);
 
                 let phoneNumber = phoneNumberInput.value.trim();
                 const personName = personNameInput.value.trim();
@@ -81,27 +80,27 @@
                     phoneNumber = `+2${phoneNumber}`;
                 }
 
-                // تحميل الملف إذا تم اختياره
-                let fileUrl = "";
-                if (fileInput.files.length > 0) {
-                    // إذا تم اختيار ملف، يمكننا تخزينه عبر URL مؤقت
-                    fileUrl = URL.createObjectURL(fileInput.files[0]);
-                }
-
-                // إنشاء الرسالة
-                const message = `أهلا ${personName} ${fileUrl ? "\nالملف المرفق: " + fileUrl : ""}`;
-
-                // إنشاء الرابط الخاص بالواتساب
-                const whatsappLink = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+                // إضافة الرقم إلى القائمة
+                phoneNumbers.push(phoneNumber);
                 
-                // فتح الرابط
-                window.open(whatsappLink, "_blank");
+                // إضافة اسم الشخص إلى الرسالة
+                messageText += `أهلا ${personName}\n`;
             });
 
-            // عرض الأخطاء إن وجدت
+            // إذا كانت هناك أخطاء في المدخلات
             if (errors.length > 0) {
                 alert(errors.join("\n"));
+                return;
             }
+
+            // رسالة موحدة لجميع الأرقام
+            const finalMessage = encodeURIComponent(messageText);
+
+            // إنشاء الرابط الخاص بالواتساب مع جميع الأرقام
+            const whatsappLink = `https://wa.me/?text=${finalMessage}`;
+
+            // فتح الرابط
+            window.open(whatsappLink, "_blank");
         });
     </script>
 </body>
