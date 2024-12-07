@@ -3,35 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Message</title>
+    <title>WhatsApp Message Sender</title>
 </head>
 <body>
     <h2>Send a WhatsApp Message</h2>
+    
+    <!-- إدخال الرقم -->
     <label for="phoneNumber">Enter Phone Number:</label>
-    <input type="text" id="phoneNumber" placeholder="Enter phone number (e.g., 15551234567)">
+    <input type="text" id="phoneNumber" placeholder="Enter phone number (e.g., 1012345678)">
     <br><br>
+    
+    <!-- إدخال الرسالة -->
     <label for="message">Enter Message:</label>
-    <textarea id="message" placeholder="Enter your message"></textarea>
+    <textarea id="message" placeholder="Type your message here"></textarea>
     <br><br>
+    
+    <!-- زر الإرسال -->
     <button id="sendMessage">Send Message</button>
 
     <script>
+        // إضافة حدث عند الضغط على الزر
         document.getElementById('sendMessage').addEventListener('click', function() {
-            // Get the phone number and message
-            const phoneNumber = document.getElementById('phoneNumber').value.trim();
-            const message = document.getElementById('message').value.trim();
-
-            // Check if the phone number is valid
+            // قراءة الرقم والرسالة من الحقول
+            let phoneNumber = document.getElementById('phoneNumber').value.trim(); // الرقم
+            const message = document.getElementById('message').value.trim(); // الرسالة
+            
+            // التحقق من إدخال الرقم
             if (!phoneNumber) {
                 alert("Please enter a valid phone number!");
                 return;
             }
 
-            // Create the WhatsApp link
-            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            // إضافة كود الدولة +2 إذا لم يكن موجودًا
+            if (!phoneNumber.startsWith("+2")) {
+                phoneNumber = `+2${phoneNumber}`;
+            }
 
-            // Open WhatsApp
-            window.open(url, "_blank");
+            // إنشاء الرابط الخاص بالواتساب
+            const whatsappLink = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+            
+            // فتح الرابط في نافذة جديدة
+            window.open(whatsappLink, "_blank");
         });
     </script>
 </body>
