@@ -3,95 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send WhatsApp Messages</title>
-    <style>
-        .input-group {
-            margin-bottom: 10px;
-        }
-        .input-group input {
-            margin-right: 5px;
-        }
-    </style>
+    <title>Send WhatsApp Message</title>
 </head>
 <body>
-    <h2>Send WhatsApp Messages</h2>
+    <h2>Send WhatsApp Message</h2>
 
-    <!-- منطقة المدخلات -->
-    <div id="inputContainer">
-        <div class="input-group">
-            <input type="text" id="phoneNumber1" placeholder="Enter phone number (e.g., 1012345678)">
-            <input type="text" id="personName1" placeholder="Enter recipient's name">
-        </div>
+    <!-- حقل واحد لإدخال الرقم والاسم -->
+    <div class="input-group">
+        <input type="text" id="phoneNumber" placeholder="Enter phone number (e.g., 1012345678)">
+        <input type="text" id="personName" placeholder="Enter recipient's name">
     </div>
-    
-    <!-- زر إضافة رقم جديد -->
-    <button id="addInput">Add More</button>
-    <br><br>
 
     <!-- زر الإرسال -->
-    <button id="sendMessage">Send Messages</button>
+    <button id="sendMessage">Send Message</button>
 
     <script>
-        let inputCounter = 1; // عداد لتتبع عدد الحقول المدخلة
-
-        // إضافة حدث لإضافة حقل جديد
-        document.getElementById('addInput').addEventListener('click', function() {
-            inputCounter++;
-
-            // إنشاء مجموعة مدخلات جديدة
-            const inputGroup = document.createElement('div');
-            inputGroup.className = 'input-group';
-            inputGroup.innerHTML = `
-                <input type="text" id="phoneNumber${inputCounter}" placeholder="Enter phone number (e.g., 1012345678)">
-                <input type="text" id="personName${inputCounter}" placeholder="Enter recipient's name">
-            `;
-
-            // إضافة المجموعة إلى الحاوية
-            document.getElementById('inputContainer').appendChild(inputGroup);
-        });
-
         // إضافة حدث للإرسال
         document.getElementById('sendMessage').addEventListener('click', function() {
-            const inputs = document.querySelectorAll('.input-group'); // جميع المجموعات
-            const errors = [];
+            const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const personName = document.getElementById('personName').value.trim();
             
-            // معالجة كل حقل
-            inputs.forEach((group, index) => {
-                const phoneNumberInput = group.querySelector(`#phoneNumber${index + 1}`);
-                const personNameInput = group.querySelector(`#personName${index + 1}`);
-
-                let phoneNumber = phoneNumberInput.value.trim();
-                const personName = personNameInput.value.trim();
-
-                // التحقق من المدخلات
-                if (!phoneNumber) {
-                    errors.push(`Phone number is missing for recipient ${index + 1}`);
-                    return;
-                }
-                if (!personName) {
-                    errors.push(`Recipient name is missing for recipient ${index + 1}`);
-                    return;
-                }
-
-                // إضافة +2 إذا لم يكن موجودًا
-                if (!phoneNumber.startsWith("+2")) {
-                    phoneNumber = `+2${phoneNumber}`;
-                }
-
-                // الرسالة المخصصة لكل شخص
-                const message = `أهلا ${personName}`;
-
-                // إنشاء الرابط الخاص بالواتساب
-                const whatsappLink = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
-
-                // فتح الرابط لإرسال الرسالة
-                window.open(whatsappLink, "_blank");
-            });
-
-            // عرض الأخطاء إن وجدت
-            if (errors.length > 0) {
-                alert(errors.join("\n"));
+            // التحقق من المدخلات
+            if (!phoneNumber) {
+                alert('Phone number is required');
+                return;
             }
+            if (!personName) {
+                alert('Recipient name is required');
+                return;
+            }
+
+            // إضافة +2 إذا لم يكن موجودًا
+            let formattedPhoneNumber = phoneNumber;
+            if (!formattedPhoneNumber.startsWith("+2")) {
+                formattedPhoneNumber = `+2${formattedPhoneNumber}`;
+            }
+
+            // الرسالة المخصصة للشخص
+            // const message = `أهلا ${personName}`;
+            const message = ` السلام عليكم ا/ ${personName} معاك مازن من مكتب حماية الاسماعيلية  الشهادة صلاحية المنشاة وشهادة صلاحية جهاز الاطفاء الخاصة بالمنشأة خلصت حضرتك ممكن تيجي تستلمها من الحماية المدنية الاسماعلية (المطافى)`;
+            // إنشاء الرابط الخاص بالواتساب
+            const whatsappLink = `https://wa.me/${formattedPhoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+
+            // فتح الرابط لإرسال الرسالة
+            window.open(whatsappLink, "_blank");
         });
     </script>
 </body>
