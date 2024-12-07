@@ -4,56 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WhatsApp Message Sender</title>
+    <style>
+        .input-group {
+            margin-bottom: 10px;
+        }
+        .input-group input {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Send a WhatsApp Message</h2>
+    <h2>Send WhatsApp Messages</h2>
+
+    <!-- منطقة المدخلات -->
+    <div id="inputContainer">
+        <div class="input-group">
+            <input type="text" id="phoneNumber1" placeholder="Enter phone number (e.g., 1012345678)">
+            <input type="text" id="personName1" placeholder="Enter recipient's name">
+            <input type="file" id="fileInput1">
+        </div>
+    </div>
     
-    <!-- إدخال الرقم -->
-    <label for="phoneNumber">Phone Number:</label>
-    <input type="text" id="phoneNumber" placeholder="Enter phone number (e.g., 1012345678)">
+    <!-- زر إضافة رقم جديد -->
+    <button id="addInput">Add More</button>
     <br><br>
-    
-    <!-- إدخال اسم الشخص -->
-    <label for="personName">Recipient Name:</label>
-    <input type="text" id="personName" placeholder="Enter recipient's name">
-    <br><br>
-    
+
     <!-- زر الإرسال -->
-    <button id="sendMessage">Send Message</button>
+    <button id="sendMessage">Send Messages</button>
 
     <script>
+        let inputCounter = 1; // عداد لتتبع عدد الحقول المدخلة
+
+        // إضافة حدث لإضافة حقل جديد
+        document.getElementById('addInput').addEventListener('click', function() {
+            inputCounter++;
+
+            // إنشاء مجموعة مدخلات جديدة
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'input-group';
+            inputGroup.innerHTML = `
+                <input type="text" id="phoneNumber${inputCounter}" placeholder="Enter phone number (e.g., 1012345678)">
+                <input type="text" id="personName${inputCounter}" placeholder="Enter recipient's name">
+                <input type="file" id="fileInput${inputCounter}">
+            `;
+
+            // إضافة المجموعة إلى الحاوية
+            document.getElementById('inputContainer').appendChild(inputGroup);
+        });
+
+        // إضافة حدث للإرسال
         document.getElementById('sendMessage').addEventListener('click', function() {
-            // قراءة الرقم، الاسم، والرسالة من الحقول
-            const phoneNumberInput = document.getElementById('phoneNumber'); // مدخل الرقم
-            const personName = document.getElementById('personName').value.trim(); // اسم الشخص
-            let phoneNumber = phoneNumberInput.value.trim(); // الرقم
+            const inputs = document.querySelectorAll('.input-group'); // جميع المجموعات
+            const errors = [];
             
-            // التحقق من إدخال الرقم
-            if (!phoneNumber) {
-                alert("Please enter a valid phone number!");
-                return;
+            // معالجة كل حقل
+            inputs.forEach((group, index) => {
+                const phoneNumberInput = group.querySelector(`#phoneNumber${index + 1}`);
+                const personNameInput = group.querySelector(`#personName${index + 1}`);
+                const fileInput = group.querySelector(`#fileInput${index + 1}`);
+
+                let phoneNumber = phoneNumberInput.value.trim();
+                const personName = personNameInput.value.trim();
+
+                // التحقق من المدخلات
+                if (!phoneNumber) {
+                    errors.push(`Phone number is missing for recipient ${index + 1}`);
+                    return;
+                }
+                if (!personName) {
+                    errors.push(`Recipient name is missing for recipient ${index + 1}`);
+                    return;
+                }
+
+                // إضافة +2 إذا لم يكن موجودًا
+                if (!phoneNumber.startsWith("+2")) {
+                    phoneNumber = `+2${phoneNumber}`;
+                }
+
+                // تحميل الملف إذا تم اختياره
+                let fileUrl = "";
+                if (fileInput.files.length > 0) {
+                    // إذا تم اختيار ملف، يمكننا تخزينه عبر URL مؤقت
+                    fileUrl = URL.createObjectURL(fileInput.files[0]);
+                }
+
+                // إنشاء الرسالة
+                const message = `أهلا ${personName} ${fileUrl ? "\nالملف المرفق: " + fileUrl : ""}`;
+
+                // إنشاء الرابط الخاص بالواتساب
+                const whatsappLink = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
+                
+                // فتح الرابط
+                window.open(whatsappLink, "_blank");
+            });
+
+            // عرض الأخطاء إن وجدت
+            if (errors.length > 0) {
+                alert(errors.join("\n"));
             }
-
-            // التحقق من إدخال الاسم
-            if (!personName) {
-                alert("Please enter the recipient's name!");
-                return;
-            }
-
-            // إضافة +2 تلقائيًا إذا لم يكن موجودًا
-            if (!phoneNumber.startsWith("+2")) {
-                phoneNumber = `+2${phoneNumber}`;
-                phoneNumberInput.value = phoneNumber; // تحديث قيمة الحقل
-            }
-
-            // إنشاء الرسالة
-            const message = `أهلا ${personName}`;
-
-            // إنشاء الرابط الخاص بالواتساب
-            const whatsappLink = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
-            
-            // فتح الرابط في نافذة جديدة
-            window.open(whatsappLink, "_blank");
         });
     </script>
 </body>
