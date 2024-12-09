@@ -9,7 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0 40px 0 40px;
-            background-color: #ECE5DD; /* لون خلفية الشات */
+            background-color: #ECE5DD; /* لون الشات في واتساب */
             color: #333;
             display: flex;
             flex-direction: column;
@@ -17,9 +17,6 @@
             justify-content: center;
             height: 100vh;
             position: relative;
-            background-image: url('https://i.imgur.com/JfpLkxm.png'); /* خلفية الشات */
-            background-size: cover;
-            background-repeat: repeat;
         }
 
         .container {
@@ -35,7 +32,7 @@
         h2 {
             text-align: center;
             margin-bottom: 20px;
-            color: #075E54;
+            color: #075E54; /* لون النص الأخضر */
         }
 
         .input-group {
@@ -65,7 +62,7 @@
             font-size: 18px;
             font-weight: bold;
             color: #fff;
-            background: #25D366;
+            background: #25D366; /* لون زر واتساب */
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -73,7 +70,7 @@
         }
 
         button:hover {
-            background: #128C7E;
+            background: #128C7E; /* لون أغمق عند التمرير */
         }
     </style>
 </head>
@@ -102,7 +99,7 @@
             }
 
             const formattedPhone = phoneNumber.startsWith('+2') ? phoneNumber : `+2${phoneNumber}`;
-             const message = ` السلام عليكم ا/ ${personName} معاك مازن من مكتب حماية الاسماعيلية  الشهادة صلاحية المنشاة وشهادة صلاحية جهاز الاطفاء الخاصة بالمنشأة خلصت حضرتك ممكن تيجي تستلمها من الحماية المدنية الاسماعلية (المطافى)`;
+        const message = ` السلام عليكم ا/ ${personName} معاك مازن من مكتب حماية الاسماعيلية  الشهادة صلاحية المنشاة وشهادة صلاحية جهاز الاطفاء الخاصة بالمنشأة خلصت حضرتك ممكن تيجي تستلمها من الحماية المدنية الاسماعلية (المطافى)`;
             const link = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
 
             window.open(link, '_blank');
@@ -110,6 +107,7 @@
     </script>
 </body>
 </html>
+
 
 
 
