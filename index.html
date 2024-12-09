@@ -4,50 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send WhatsApp Message</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0 40px 0 40px;
+            background-color: #ECE5DD; /* لون خلفية الشات */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+            background-image: url('https://i.imgur.com/JfpLkxm.png'); /* خلفية الشات */
+            background-size: cover;
+            background-repeat: repeat;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9); /* خلفية شفافة قليلاً */
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 400px;
+            z-index: 1;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #075E54;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #fff;
+            color: #333;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background: #25D366;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #128C7E;
+        }
+    </style>
 </head>
 <body>
     <h2>Send WhatsApp Message</h2>
-
-    <!-- حقل واحد لإدخال الرقم والاسم -->
-    <div class="input-group">
-        <input type="text" id="phoneNumber" placeholder="Enter phone number (e.g., 1012345678)">
-        <input type="text" id="personName" placeholder="Enter recipient's name">
+    <div class="container">
+        <div class="input-group">
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" placeholder="Enter phone number">
+        </div>
+        <div class="input-group">
+            <label for="personName">Recipient's Name:</label>
+            <input type="text" id="personName" placeholder="Enter recipient's name">
+        </div>
+        <button id="sendMessage">Send Message</button>
     </div>
 
-    <!-- زر الإرسال -->
-    <button id="sendMessage">Send Message</button>
-
     <script>
-        // إضافة حدث للإرسال
-        document.getElementById('sendMessage').addEventListener('click', function() {
+        document.getElementById('sendMessage').addEventListener('click', function () {
             const phoneNumber = document.getElementById('phoneNumber').value.trim();
             const personName = document.getElementById('personName').value.trim();
-            
-            // التحقق من المدخلات
-            if (!phoneNumber) {
-                alert('Phone number is required');
-                return;
-            }
-            if (!personName) {
-                alert('Recipient name is required');
+
+            if (!phoneNumber || !personName) {
+                alert('Please enter both phone number and recipient\'s name.');
                 return;
             }
 
-            // إضافة +2 إذا لم يكن موجودًا
-            let formattedPhoneNumber = phoneNumber;
-            if (!formattedPhoneNumber.startsWith("+2")) {
-                formattedPhoneNumber = `+2${formattedPhoneNumber}`;
-            }
+            const formattedPhone = phoneNumber.startsWith('+2') ? phoneNumber : `+2${phoneNumber}`;
+             const message = ` السلام عليكم ا/ ${personName} معاك مازن من مكتب حماية الاسماعيلية  الشهادة صلاحية المنشاة وشهادة صلاحية جهاز الاطفاء الخاصة بالمنشأة خلصت حضرتك ممكن تيجي تستلمها من الحماية المدنية الاسماعلية (المطافى)`;
+            const link = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
 
-            // الرسالة المخصصة للشخص
-            // const message = `أهلا ${personName}`;
-            const message = ` السلام عليكم ا/ ${personName} معاك مازن من مكتب حماية الاسماعيلية  الشهادة صلاحية المنشاة وشهادة صلاحية جهاز الاطفاء الخاصة بالمنشأة خلصت حضرتك ممكن تيجي تستلمها من الحماية المدنية الاسماعلية (المطافى)`;
-            // إنشاء الرابط الخاص بالواتساب
-            const whatsappLink = `https://wa.me/${formattedPhoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message)}`;
-
-            // فتح الرابط لإرسال الرسالة
-            window.open(whatsappLink, "_blank");
+            window.open(link, '_blank');
         });
     </script>
 </body>
 </html>
+
+
+
+
+<!-- const message = ` السلام عليكم ا/ ${personName} معاك مازن من مكتب حماية الاسماعيلية  الشهادة صلاحية المنشاة وشهادة صلاحية جهاز الاطفاء الخاصة بالمنشأة خلصت حضرتك ممكن تيجي تستلمها من الحماية المدنية الاسماعلية (المطافى)`; -->
