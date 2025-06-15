@@ -77,6 +77,12 @@
 <body>
     <h2>Send WhatsApp Message</h2>
     <div class="container">
+        <div class="input-group" style="flex-direction: row; align-items: center; gap: 10px;">
+            <input type="checkbox" id="sendSalam" style="width: 20px; height: 20px;">
+            <label for="sendSalam" style="margin: 0; font-weight: normal;">إرسال السلام </label>
+        </div>
+        
+        
         <div class="input-group">
             <label for="phoneNumber">Phone Number:</label>
             <input type="text" id="phoneNumber" placeholder="Enter phone number">
@@ -89,27 +95,39 @@
     </div>
 
     <script>
-        document.getElementById('sendMessage').addEventListener('click', function () {
-            const phoneNumber = document.getElementById('phoneNumber').value.trim();
-            const personName = document.getElementById('personName').value.trim();
 
-            if (!phoneNumber || !personName) {
-                alert('Please enter both phone number and recipient\'s name.');
-                return;
-            }
+document.getElementById('sendMessage').addEventListener('click', function () {
+    const phoneNumber = document.getElementById('phoneNumber').value.trim();
+    const personName = document.getElementById('personName').value.trim();
+    const sendSalam = document.getElementById('sendSalam').checked;
 
-            const formattedPhone = phoneNumber.startsWith('+2') ? phoneNumber : `+2${phoneNumber}`;
-        const message = ` السلام عليكم ا/ ${personName} معاك مازن من مكتب حماية الاسماعيلية  شهادة صلاحية المنشاة وشهادة صلاحية جهاز الاطفاء الخاصة بالمنشأة خلصت حضرتك ممكن تيجي تستلمها من الحماية المدنية الاسماعلية (المطافى)`;
-            const link = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
+    if (!phoneNumber) {
+        alert('من فضلك أدخل رقم الهاتف.');
+        return;
+    }
 
-            window.open(link, '_blank');
-        });
+    if (!sendSalam && !personName) {
+        alert('يرجى إدخال اسم المستلم.');
+        return;
+    }
+
+    const formattedPhone = phoneNumber.startsWith('+2') ? phoneNumber : `+2${phoneNumber}`;
+
+    let message = '';
+    if (sendSalam) {
+        message = 'السلام عليكم';
+    } else {
+        message = ` السلام عليكم ا/ ${personName} معاك مازن الطيب من مكتب حماية الاسماعيلية  شهادة صلاحية المنشاة وشهادة صلاحية جهاز الاطفاء الخاصة بالمنشأة خلصت حضرتك ممكن تيجي تستلمها من الحماية المدنية الاسماعلية (المطافى)`
+    }
+
+    const link = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
+    window.open(link, '_blank');
+});
+
+
     </script>
 </body>
 </html>
 
 
-
-
-
-<!-- const message = ` السلام عليكم ا/ ${personName} معاك مازن من مكتب حماية الاسماعيلية  الشهادة صلاحية المنشاة وشهادة صلاحية جهاز الاطفاء الخاصة بالمنشأة خلصت حضرتك ممكن تيجي تستلمها من الحماية المدنية الاسماعلية (المطافى)`; -->
+<!-- const message = ` السلام عليكم ا/ ${personName} معاك مازن الطيب من مكتب حماية الاسماعيلية  شهادة صلاحية المنشاة وشهادة صلاحية جهاز الاطفاء الخاصة بالمنشأة خلصت حضرتك ممكن تيجي تستلمها من الحماية المدنية الاسماعلية (المطافى)`; -->
